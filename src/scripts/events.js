@@ -58,7 +58,6 @@ const mountAll = () => {
 	screenshareModal.mount();
 	updateModal.mount();
 
-	menus.mount();
 	dock.mount();
 	tray.mount();
 	touchBar.mount();
@@ -73,7 +72,6 @@ const unmountAll = () => {
 	screenshareModal.unmount();
 	updateModal.unmount();
 
-	menus.unmount();
 	dock.unmount();
 	tray.unmount();
 	touchBar.unmount();
