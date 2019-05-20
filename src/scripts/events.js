@@ -16,8 +16,6 @@ import {
 	setPreferences,
 	toggleSpellcheckingDictionary,
 	addServerFromUrl,
-	removeServerFromUrl,
-	sortServers,
 	setServerProperties,
 	historyFlagsUpdated,
 	editFlagsUpdated,
@@ -32,12 +30,12 @@ import {
 	triggerContextMenu,
 	reloadWebview,
 	showMainWindow,
+	openDevToolsOnWebview,
 } from '../store/actions';
 import { queryEditFlags } from '../utils';
 import { migrateDataFromLocalStorage } from './data';
 import { downloads } from './downloads';
 import { landing } from './landing';
-import { sidebar } from './sidebar';
 import { webviews } from './webviews';
 import { MENU_ITEM_CLICKED } from '../store/actions/menus';
 const { app, dialog, getCurrentWindow, shell } = remote;
@@ -45,13 +43,11 @@ const { contextMenu } = remote.require('./main');
 
 
 const mountAll = () => {
-	sidebar.mount();
 	landing.mount();
 	webviews.mount();
 };
 
 const unmountAll = () => {
-	sidebar.unmount();
 	landing.unmount();
 	webviews.unmount();
 };
@@ -364,7 +360,12 @@ sagaMiddleware.run(function *menusSaga() {
 			}
 
 			case 'open-devtools-for-server':
-				webviews.openDevTools({ active: true });
+				const { view } = yield select();
+				if (!view.url) {
+					break;
+				}
+
+				store.dispatch(openDevToolsOnWebview({ url: view.url }));
 				break;
 
 			case 'go-back':
@@ -458,34 +459,6 @@ export default async () => {
 
 	landing.on('add-server', async (serverUrl, callback) => {
 		callback(await addServer(serverUrl));
-	});
-
-	sidebar.on('select-server', (url) => {
-		store.dispatch(showServer(url));
-	});
-
-	sidebar.on('reload-server', (url) => {
-		store.dispatch(reloadWebview({ url }));
-	});
-
-	sidebar.on('show-download-manager', () => {
-		downloads.showWindow();
-	});
-
-	sidebar.on('remove-server', (url) => {
-		store.dispatch(removeServerFromUrl(url));
-	});
-
-	sidebar.on('open-devtools-for-server', (url) => {
-		webviews.openDevTools({ url });
-	});
-
-	sidebar.on('add-server', () => {
-		store.dispatch(showLanding());
-	});
-
-	sidebar.on('servers-sorted', (urls) => {
-		store.dispatch(sortServers(urls));
 	});
 
 	webviews.on('context-menu', (url, params) => {

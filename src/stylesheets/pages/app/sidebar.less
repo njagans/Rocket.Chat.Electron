@@ -1,31 +1,28 @@
 .sidebar {
-	--transitions-duration: 200ms;
-
 	position: fixed;
 	z-index: 100000;
+	left: 0;
 	top: 0;
 	bottom: 0;
-
 	display: flex;
 	flex-direction: column;
-
 	width: 68px;
 	height: 100%;
-
 	user-select: none;
-
 	color: var(--color, #ffffff);
-	background: var(--background, @primary-background-color);
+	background: var(--background, var(--color-dark));
 	align-items: stretch;
 	-webkit-app-region: drag;
+	transition: left 200ms;
 
 	&.sidebar--hidden {
-		display: none;
+		left: -68px;
 
 		& ~ .Views .loading,
 		& ~ .Views .landing,
 		& ~ .Views .Webviews .webview {
 			left: 0;
+			transition: left 200ms;
 		}
 	}
 
@@ -39,18 +36,14 @@
 		display: flex;
 		flex-direction: column;
 		flex: 1 1 0;
-
 		padding-top: 10px;
-
 		background-color: rgba(0, 0, 0, 0.1);
 		align-items: stretch;
 	}
 
 	.sidebar__submenu {
-
 		display: flex;
 		flex-direction: column;
-
 		border-top: 1px solid;
 		border-top-color: rgba(0, 0, 0, 0.1);
 		background-color: rgba(0, 0, 0, 0.1);
@@ -60,7 +53,6 @@
 		display: flex;
 		flex-direction: column;
 		flex: 0 0 auto;
-
 		margin: 0;
 		padding: 0;
 		align-items: stretch;
@@ -70,12 +62,9 @@
 	.sidebar__submenu-action {
 		display: flex;
 		flex-direction: row;
-
 		height: 20px;
 		margin: 5px;
-
 		cursor: pointer;
-
 		color: white;
 		border: none;
 		border-bottom: 1px solid;
@@ -87,7 +76,6 @@
 
 	.sidebar__submenu-action-active {
 		animation: pulse 2s infinite;
-
 		border-bottom: 1px solid;
 		border-bottom-color: aqua;
 	}
@@ -109,12 +97,9 @@
 	.sidebar__action,
 	.sidebar__list-item {
 		position: relative;
-
 		flex: 0 0 auto;
-
 		box-sizing: border-box;
 		margin: 4px 0;
-
 		font-size: 2.5rem;
 		line-height: 1.25;
 
@@ -122,74 +107,27 @@
 			position: absolute;
 			top: 50%;
 			left: 100%;
-
 			display: block;
 			visibility: hidden;
-
 			padding: 0.5rem 1rem;
-
 			content: attr(data-tooltip);
-
-			transition: all var(--transitions-duration) ease-out var(--transitions-duration);
+			transition: all 200ms ease-out 200ms;
 			transform: translate(10px, -50%);
-
 			white-space: nowrap;
 			pointer-events: none;
-
 			opacity: 0;
-
 			color: #ffffff;
 			border-radius: 2px;
 			background-color: #1f2329;
-
 			font-size: 0.875rem;
 			line-height: normal;
 		}
 
 		&[data-tooltip]:hover::after {
 			visibility: visible;
-
 			transform: translate(0, -50%);
-
 			opacity: 1;
 		}
-	}
-
-	.sidebar__action {
-		display: flex;
-		flex-direction: row;
-
-		height: 40px;
-		padding: 0;
-
-		cursor: pointer;
-
-		color: inherit;
-
-		border: none;
-		background: none;
-
-		align-items: center;
-		justify-content: center;
-
-		.sidebar__action-label {
-			width: 40px;
-			height: 40px;
-
-			transition: opacity var(--transitions-duration);
-
-			opacity: 0.6;
-			color: inherit;
-			background-color: rgba(0, 0, 0, 0.1);
-		}
-
-		&:hover .sidebar__action-label {
-			opacity: 1;
-		}
-	}
-
-	.sidebar__add-server .sidebar__action-label {
-		line-height: 30px;
 	}
 }
 
@@ -200,13 +138,9 @@
 
 	.server {
 		position: relative;
-
 		display: flex;
-
 		cursor: pointer;
-
 		color: inherit;
-
 		font-size: 24px;
 		align-items: center;
 		flex-flow: row wrap;
@@ -214,16 +148,13 @@
 
 		&::before {
 			flex: 0 0 auto;
-
 			width: 5px;
 			height: 0;
 			margin-right: -5px;
-
 			content: "";
 			transition:
-				height var(--transitions-duration),
-				opacity var(--transitions-duration);
-
+				height 200ms,
+				opacity 200ms;
 			opacity: 1;
 			border-radius: 0 3px 3px 0;
 			background-color: #ffffff;
@@ -231,24 +162,18 @@
 
 		.server__initials {
 			flex: 1 1 auto;
-
-			transition: opacity var(--transitions-duration);
+			transition: opacity 200ms;
 			text-align: center;
-
 			opacity: 0.6;
-
 			line-height: 42px;
 		}
 
 		.server__favicon {
 			display: none;
 			flex: 1 1 auto;
-
 			width: 42px;
 			height: 42px;
-
-			transition: opacity var(--transitions-duration);
-
+			transition: opacity 200ms;
 			opacity: 0.6;
 			object-fit: contain;
 		}
@@ -258,19 +183,13 @@
 			z-index: 1;
 			top: 2px;
 			right: 8px;
-
 			display: block;
-
 			min-width: 15px;
-
 			text-align: center;
-
 			color: #ffffff;
-
 			border-radius: 20px;
 			background-color: #e43325;
 			box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-
 			font-size: 10px;
 			font-weight: bold;
 			line-height: 15px;
@@ -279,11 +198,8 @@
 		.server__shortcut {
 			visibility: hidden;
 			flex: 1 0 100%;
-
 			padding-top: 8px;
-
 			text-align: center;
-
 			font-size: 12px;
 			line-height: 1;
 		}
@@ -291,7 +207,6 @@
 		&.server--unread {
 			&::before {
 				height: 6px;
-
 				opacity: 0.6;
 			}
 		}
@@ -300,7 +215,6 @@
 		&:hover.server--active {
 			&::before {
 				height: 30px;
-
 				opacity: 1;
 			}
 
@@ -329,113 +243,4 @@
 			opacity: 0.8;
 		}
 	}
-}
-
-.app-download-manager {
-	position: absolute;
-	z-index: 10;
-	bottom: 0;
-	left: 68px;
-
-	display: none;
-
-	overflow: scroll;
-	overflow-x: hidden;
-
-	width: 400px;
-	height: 30%;
-
-	color: #ffffff;
-
-	border-left: 1px solid;
-	border-left-color: rgba(0, 0, 0, 0.1);
-	background-color: rgb(47, 52, 61);
-
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-}
-
-.app-download-manager-actions {
-	display: flex;
-
-	padding: 10px;
-	flex-flow: nowrap;
-}
-
-.app-download-manager-clear-action {
-	position: absolute;
-	right: 10px;
-
-	color: rgba(255, 255, 255, 0.85);
-	border: none;
-	border-radius: 2px;
-	background-color: #1d74f5;
-}
-
-.app-download-manager-items {
-	padding: 5px;
-}
-
-.app-download-manager-item {
-	display: flex;
-
-	padding: 5px;
-
-	border-color: rgba(0, 0, 0, 0.1);
-	border-top: 1px solid;
-	flex-flow: row wrap;
-}
-
-.app-download-manager-item_title {
-	width: 310px;
-	height: 30px;
-
-	color: #ffffff;
-
-	line-height: 25px;
-}
-
-.app-download-manager-item_dl_state {
-	width: 100%;
-
-	font-size: 0.5em;
-}
-
-.app-download-manager-item-button_show {
-	width: 20px;
-
-	text-align: center;
-
-	color: rgba(255, 255, 255, 0.85);
-	border: none;
-	border-radius: 2px;
-	background-color: #1d74f5;
-}
-
-.app-download-manager-item-button_show_icon {
-	width: 20px;
-
-	transform: rotate(-45deg);
-	text-align: center;
-}
-
-.app-download-manager-item-button_action {
-	width: 20px;
-
-	text-align: center;
-
-	color: rgba(255, 255, 255, 0.85);
-	border: none;
-	border-radius: 2px;
-	background-color: #1d74f5;
-}
-
-.app-download-manager-item_buttons {
-	position: absolute;
-	right: 0;
-
-	display: flex;
-
-	width: 70px;
-	padding: 5px;
-	justify-content: space-around;
 }

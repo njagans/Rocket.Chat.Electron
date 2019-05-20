@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import { select, takeEvery } from 'redux-saga/effects';
 import { connect, store, sagaMiddleware } from '../store';
-import { webviewCreated, RELOAD_WEBVIEW } from '../store/actions';
+import { webviewCreated, RELOAD_WEBVIEW, OPEN_DEVTOOLS_ON_WEBVIEW } from '../store/actions';
 
 
 let state = {
@@ -31,10 +31,6 @@ const onWebview = (f) => (webviewSelector, ...args) => {
 
 	return f.call(null, webview, ...args);
 };
-
-const openDevTools = onWebview((webview) => {
-	webview.openDevTools();
-});
 
 const goBack = onWebview((webview) => {
 	webview.goBack();
@@ -226,7 +222,7 @@ const unmount = () => {
 	events.removeAllListeners();
 };
 
-const reload = function *({ payload: { url, webContentsId, ignoringCache = false, fromUrl = false } }) {
+const doReloadWebview = function *({ payload: { url, webContentsId, ignoringCache = false, fromUrl = false } }) {
 	url = yield url || select(({ webviews }) => {
 		const webview = webviews.find(({ webContentsId: id }) => id === webContentsId);
 		return webview && webview.url;
@@ -246,14 +242,23 @@ const reload = function *({ payload: { url, webContentsId, ignoringCache = false
 	webview.reload();
 };
 
+const doOpenDevToolsOnWebview = function *({ payload: { url, webContentsId } }) {
+	url = yield url || select(({ webviews }) => {
+		const webview = webviews.find(({ webContentsId: id }) => id === webContentsId);
+		return webview && webview.url;
+	});
+	const webview = getWebview({ url });
+	webview.openDevTools();
+};
+
 sagaMiddleware.run(function *() {
-	yield takeEvery(RELOAD_WEBVIEW, reload);
+	yield takeEvery(RELOAD_WEBVIEW, doReloadWebview);
+	yield takeEvery(OPEN_DEVTOOLS_ON_WEBVIEW, doOpenDevToolsOnWebview);
 });
 
 export const webviews = Object.assign(events, {
 	mount,
 	unmount,
-	openDevTools,
 	goBack,
 	goForward,
 	resetZoom,

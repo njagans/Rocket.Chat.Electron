@@ -2,7 +2,7 @@ import { shell } from 'electron';
 import { takeEvery } from 'redux-saga/effects';
 import i18n from '../i18n';
 import { sagaMiddleware } from '../store';
-import { DOWNLOAD_STARTED, DOWNLOAD_UPDATED } from '../store/actions';
+import { DOWNLOAD_STARTED, DOWNLOAD_UPDATED, SHOW_DOWNLOADS } from '../store/actions';
 
 
 const formatMemorySize = (fileBytes) => {
@@ -312,7 +312,12 @@ function *didDownloadUpdate({ payload: download }) {
 	}
 }
 
+function *doShowDownloads() {
+	downloads.showWindow();
+}
+
 sagaMiddleware.run(function *watchDownloadsActions() {
 	yield takeEvery(DOWNLOAD_STARTED, didDownloadStart);
 	yield takeEvery(DOWNLOAD_UPDATED, didDownloadUpdate);
+	yield takeEvery(SHOW_DOWNLOADS, doShowDownloads);
 });
